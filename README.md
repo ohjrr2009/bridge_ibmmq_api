@@ -1,8 +1,8 @@
 # Descrição #
 
-Projeto que define a API REST para ser utilizada como ponte de conexão com um IBM MQ 8.0+ (ainda não foi testada com a versão 7.5.0.5). Todos os códigos do repositório são destinados a serem utilizados dentro de Lambdas na Plataforma AWS.
+Projeto que define a API REST para ser utilizada como ponte de conexão com um IBM MQ 7.5+ -> 9.1.x. Todos os códigos do repositório são destinados a serem utilizados dentro de Lambdas na Plataforma AWS.
 
-Cabe destacar que a versão 9.2.2 possui uma API REST madura, no entanto, como ainda utilizamos a versão 7.5.0.5 do IBM MQ no ambiente de Produção e Homologação, necessitamos de um **"Emulador"** da API REST para que futuros projetos possam utilizar o IBM MQ sem acessá-la diretamente.
+Cabe destacar que a versão 9.2.2 possui uma API REST madura, no entanto, para versões anteriores, necessitamos de um **"Emulador"** da API REST para que projetos possam utilizar o IBM MQ sem acessá-lo diretamente.
 
 ![Endpoints](endpoints_rest.png)
 
@@ -27,7 +27,7 @@ Default output format [None]: json
 
 Entre em contato com o time de infraestrutura para obter o **AWS Access Key ID** e o **AWS Secret Access Key** para o ambiente de desenvolvimento.
 
-É necessário também que a [Layer Bridge-Ibmmq](https://bitbucket.org/tigestao-smartbank/bridge_ibmmq_layer) seja baixada para localmente para posterior apontamento ou rebuild da mesma.
+É necessário também que a Layer Bridge-Ibmmq seja baixada para localmente para posterior apontamento ou rebuild da mesma.
 
 ## Utilização
 Este projeto é composto pelo código fonte escrito em JavaScript e expõe 4 endpoints na Api Gateway.
@@ -55,7 +55,7 @@ $ serverless remove --env dev
 **BRIDGE-IBMMQ - Endpoints da API REST em DEV**
 
 * **LIST_MESSAGES**
-  * **GET** - https://05ovjshnib-vpce-015b80d1657e30f4b.execute-api.us-east-2.amazonaws.com/dev/ibmmq/rest/v2/messaging/qmgr/{qmgrName}/queue/{qName}/messagelist
+  * **GET** - https:///dev/ibmmq/rest/v2/messaging/qmgr/{qmgrName}/queue/{qName}/messagelist
    * **Descrição:** Recupera **não-destrutivamente** a lista de mensagens disponíveis na fila do IBM MQ
    * **Parâmetros:**
      *  correlationId:string (Query - Opcional) - Uma string hexadecimal de 48 caracteres que representa o correlation ID
@@ -66,7 +66,7 @@ $ serverless remove --env dev
      *  qName:string (Path - Obrigatório) - O nome da Fila a ser utilizada
  
 * **DELETE_MESSAGE**
-  * **DELETE** - https://05ovjshnib-vpce-015b80d1657e30f4b.execute-api.us-east-2.amazonaws.com/dev/ibmmq/rest/v2/messaging/qmgr/{qmgrName}/queue/{qName}/message
+  * **DELETE** - https:///dev/ibmmq/rest/v2/messaging/qmgr/{qmgrName}/queue/{qName}/message
   * **Descrição:** Recupera destrutivamente a próxima mensagem disponível na fila do IBM MQ.
   * **Parâmetros:**
      *  correlationId:string (Query - Opcional) - Uma string hexadecimal de 48 caracteres que representa o correlation ID.
@@ -77,7 +77,7 @@ $ serverless remove --env dev
      *  qName:string (Path - Obrigatório) - O nome da Fila a ser utilizada
  
 * **GET_MESSAGE**
-  * **GET** - https://05ovjshnib-vpce-015b80d1657e30f4b.execute-api.us-east-2.amazonaws.com/dev/ibmmq/rest/v2/messaging/qmgr/{qmgrName}/queue/{qName}/message
+  * **GET** - https:///dev/ibmmq/rest/v2/messaging/qmgr/{qmgrName}/queue/{qName}/message
   * **Descrição:** Recupera não-destrutivamente a próxima mensagem disponível na fila do IBM MQ.
   * **Parâmetros:**
      *  correlationId:string (Query - Opcional)  - Uma string hexadecimal de 48 caracteres que representa o correlation ID.
@@ -87,7 +87,7 @@ $ serverless remove --env dev
      *  qName:string (Path - Obrigatório) - O nome da Fila a ser utilizada
 
 * **POST_MESSAGE**
-  * **POST** - https://05ovjshnib-vpce-015b80d1657e30f4b.execute-api.us-east-2.amazonaws.com/dev/ibmmq/rest/v2/messaging/qmgr/{qmgrName}/queue/{qName}/message
+  * **POST** - https:///dev/ibmmq/rest/v2/messaging/qmgr/{qmgrName}/queue/{qName}/message
   * **Descrição:** Insere uma mensagem de texto codificada em UTF-8 em uma fila do IBM MQ.
   * **Parâmetros:**
      *  body:string (Header - Obrigatório) - Corpo da mensagem.
