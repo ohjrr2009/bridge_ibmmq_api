@@ -1,0 +1,22 @@
+get-message:
+  name: ${self:provider.stage}-${self:service}-get-message
+  handler: src/functions/message/get/handler.handler
+  environment:
+    HOME: /tmp
+  timeout: 30
+  layers:
+    - ${cf:bridge-ibmmq-layer-stack.BridgeIbmmqLambdaLayerQualifiedArn}
+  events:
+    - http:
+        path: /ibmmq/rest/v2/messaging/qmgr/{qmgrName}/queue/{qName}/message
+        method: get
+        request:
+          parameters:
+            querystrings:
+              correlationId: false
+              messageId: false
+            headers:
+              ibm-mq-rest-csrf-token: false
+            paths:
+              qmgrName: true
+              qName: true

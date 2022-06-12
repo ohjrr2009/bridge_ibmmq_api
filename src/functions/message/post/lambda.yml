@@ -1,0 +1,23 @@
+post-message:
+  name: ${self:provider.stage}-${self:service}-post-message
+  handler: src/functions/message/post/handler.handler
+  environment:
+    HOME: /tmp
+  timeout: 30
+  layers:
+      - ${cf:bridge-ibmmq-layer-stack.BridgeIbmmqLambdaLayerQualifiedArn}
+  events:
+    - http:
+        path: /ibmmq/rest/v2/messaging/qmgr/{qmgrName}/queue/{qName}/message
+        method: post
+        request:
+          parameters:
+            headers:
+              ibm-mq-rest-csrf-token: false
+              ibm-mq-md-correlationId: false
+              ibm-mq-md-expiry: false
+              ibm-mq-md-persistence: false
+              ibm-mq-md-replyTo: false
+            paths:
+              qmgrName: true
+              qName: true

@@ -1,0 +1,14 @@
+{
+  "name": "bridge-ibmmq-api",
+  "description": "",
+  "version": "0.1.1",
+  "dependencies": {
+    "aws-cli": "0.0.2",
+    "serverless-iam-roles-per-function": "^3.2.0",
+    "serverless-import-apigateway": "^1.1.1",
+    "serverless-offline": "^7.0.0",
+    "serverless-plugin-optimize": "*",
+    "serverless-plugin-resource-tagging": "^1.1.0"
+  },
+  "scripts": {}
+}

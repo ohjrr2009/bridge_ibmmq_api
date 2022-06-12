@@ -1,0 +1,51 @@
+service: bridge-ibmmq-api
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  memorySize: 128
+  logRetentionInDays: 1
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-2'}
+  lambdaHashingVersion: 20201221
+  stackName: bridge-ibmmq-api-stack
+  vpc:
+    securityGroupIds:
+      - ${cf:${opt:env}-network.LambdaSecurityGroup}
+    subnetIds:
+      - ${cf:${opt:env}-network.PrivateSubnetA}
+      - ${cf:${opt:env}-network.PrivateSubnetB}
+  stackTags:
+    smartbank:cost-center:level0: serverless
+    smartbank:cost-center:level1: core
+    smartbank:cost-center:level2: bridge-ibmmq
+  environment:
+    MQ_HOST: ${self:custom.secrets.ibmMq.host}
+    MQ_PORT: ${self:custom.secrets.ibmMq.port}
+    MQ_CH: ${self:custom.secrets.ibmMq.ch}
+    MQ_QM: ${self:custom.secrets.ibmMq.qm}
+    MQ_USR: ${self:custom.secrets.ibmMq.usr}
+    MQ_PWD: ${self:custom.secrets.ibmMq.pwd}
+
+package:
+  individually: true
+
+custom:
+  secrets: ${ssm:/aws/reference/secretsmanager/${opt:env}-resources-master-password~true}
+  importApiGateway:
+    name: ${self:provider.stage}-internal-api
+    path: /
+
+functions:
+  - ${file(src/functions/message/list/lambda.yml)}
+  - ${file(src/functions/message/get/lambda.yml)}
+  - ${file(src/functions/message/delete/lambda.yml)}
+  - ${file(src/functions/message/post/lambda.yml)}
+
+plugins:
+  - serverless-plugin-resource-tagging
+  - serverless-offline
+  - serverless-iam-roles-per-function
+  - serverless-plugin-optimize
+  - serverless-import-apigateway

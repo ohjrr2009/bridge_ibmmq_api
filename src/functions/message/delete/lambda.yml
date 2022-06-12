@@ -1,0 +1,23 @@
+delete-message:
+  name: ${self:provider.stage}-${self:service}-delete-message
+  handler: src/functions/message/delete/handler.handler
+  environment:
+    HOME: /tmp
+  timeout: 30
+  layers:
+      - ${cf:bridge-ibmmq-layer-stack.BridgeIbmmqLambdaLayerQualifiedArn}
+  events:
+    - http:
+        path: /ibmmq/rest/v2/messaging/qmgr/{qmgrName}/queue/{qName}/message
+        method: delete
+        request:
+          parameters:
+            querystrings:
+              correlationId: false
+              messageId: false
+              wait: false
+            headers:
+              ibm-mq-rest-csrf-token: false
+            paths:
+              qmgrName: true
+              qName: true

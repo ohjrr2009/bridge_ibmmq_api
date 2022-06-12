@@ -1,0 +1,23 @@
+list-messages:
+  name: ${self:provider.stage}-${self:service}-list-messages
+  handler: src/functions/message/list/handler.handler
+  environment:
+    HOME: /tmp
+  timeout: 30
+  layers:
+      - ${cf:bridge-ibmmq-layer-stack.BridgeIbmmqLambdaLayerQualifiedArn}
+  events:
+    - http:
+        path: /ibmmq/rest/v2/messaging/qmgr/{qmgrName}/queue/{qName}/messagelist
+        method: get
+        request:
+          parameters:
+            querystrings:
+              correlationId: false
+              messageId: false
+              limit: false
+            headers:
+              ibm-mq-rest-csrf-token: false
+            paths:
+              qmgrName: true
+              qName: true
