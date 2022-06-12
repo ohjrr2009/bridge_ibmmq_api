@@ -30,9 +30,9 @@ Entre em contato com o time de infraestrutura para obter o **AWS Access Key ID**
 É necessário também que a [Layer Bridge-Ibmmq](https://bitbucket.org/tigestao-smartbank/bridge_ibmmq_layer) seja baixada para localmente para posterior apontamento ou rebuild da mesma.
 
 ## Utilização
-Este projeto é composto pelo código fonte escrito em JavaScript e expõe 4 endpoints na Api Gateway de uso interno da LetsBank, denominada **Internal API**.
+Este projeto é composto pelo código fonte escrito em JavaScript e expõe 4 endpoints na Api Gateway.
 
-Os parâmetros de conexão com o IBM MQ como **hostIP**, **hostPort**, **userId**, **password** e **channelName** são armazenados em um no Secrets Manager [resources-master-password](https://us-east-2.console.aws.amazon.com/secretsmanager/home?region=us-east-2#!/secret?name=dev-resources-master-password), responsavel por armazenar credenciais e senhas de uso dos sistemas da LetsBank.
+Os parâmetros de conexão com o IBM MQ como **hostIP**, **hostPort**, **userId**, **password** e **channelName** são armazenados em um no Secrets Manager resources-master-password.
 
 Em DEV o Secret estão dentro do objeto **ibmMq**, com os seguintes atributos: "host","port","ch","qm","usr e "pwd". Os segredos são integrados ao ambiente da stack em tempo de deploy, populando variáveis de ambiente que serão utilizadas nas lambdas internamente para realizar a conexão.
 
